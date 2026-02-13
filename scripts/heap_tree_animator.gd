@@ -136,10 +136,19 @@ func _sift_down(data: Array, root_index: int, heap_size: int, phase: String, sor
 		current = largest
 
 
+func swapHeapNodes(values: Array, i: int, j: int) -> void:
+	_swap(values, i, j)
+
+
 func _swap(values: Array, i: int, j: int) -> void:
-	var temp: int = int(values[i])
+	var temp_value: int = int(values[i])
 	values[i] = int(values[j])
-	values[j] = temp
+	values[j] = temp_value
+
+	if i < node_views.size() and j < node_views.size():
+		var temp_node: HeapNodeView = node_views[i]
+		node_views[i] = node_views[j]
+		node_views[j] = temp_node
 
 
 func _ensure_node_count(target_count: int) -> void:

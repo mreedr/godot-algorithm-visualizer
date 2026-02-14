@@ -5,6 +5,7 @@ const HIGHLIGHT_NODE_COLOR := Color("#f59e0b")
 const SORTED_NODE_COLOR := Color("#34d399")
 const EDGE_COLOR := Color("#94a3b8")
 const BG_COLOR := Color("#0b1220")
+const TREE_NODE_SCENE: PackedScene = preload("res://TreeNode.tscn")
 
 @export var iteration_duration: float = 0.45
 @export var top_padding: float = 110.0
@@ -153,7 +154,12 @@ func _swap(values: Array, i: int, j: int) -> void:
 
 func _ensure_node_count(target_count: int) -> void:
 	while node_views.size() < target_count:
-		var node: HeapNodeView = HeapNodeView.new()
+		var node_instance: Node = TREE_NODE_SCENE.instantiate()
+		var node: HeapNodeView = node_instance as HeapNodeView
+		if node == null:
+			push_error("TreeNode.tscn must use HeapNodeView script.")
+			node_instance.queue_free()
+			return
 		node.radius = node_radius
 		node.fill_color = DEFAULT_NODE_COLOR
 		add_child(node)
